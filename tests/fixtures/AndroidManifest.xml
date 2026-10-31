@@ -1,0 +1,6 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.example.reviewfixture">
+    <!-- Intentionally risky synthetic fixture, not an installable application. -->
+    <application android:debuggable="true" android:testOnly="true" android:usesCleartextTraffic="true">
+        <activity android:name=".PublicActivity" android:exported="true" />
+    </application>
+</manifest>
