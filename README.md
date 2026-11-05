@@ -1,10 +1,10 @@
 # Mobile Security Review Skill
 
-An Android security review skill with reproducible XML checks, contextual review guidance, and reports that make coverage explicit.
+An Android security review skill with reproducible XML and synthetic leak checks, contextual review guidance, and reports that make coverage explicit.
 
 **Status: v0.1.0 · Android first · Python standard library · MIT**
 
-Use it to investigate release configuration and potential sensitive-data exposure. The skill helps an agent inspect source and explain evidence; the bundled CLI inspects a limited set of manifest/network XML settings. Neither establishes that an app is secure.
+Use it to investigate release configuration and potential sensitive-data exposure. The skill helps an agent inspect source and explain evidence; the bundled scripts inspect Android XML settings and look for synthetic markers in test captures. Neither establishes that an app is secure.
 
 ## Try it in one minute
 
@@ -80,6 +80,19 @@ The default threshold is `none`. Missing resources, unresolved placeholders, and
 
 The included GitHub workflow tests the tool on Python 3.10 and 3.13 and generates a fixture report. To gate your app, run the real-app command above after your trusted build/decoding process produces its selected artifacts.
 
+## Check captured logs and storage for a synthetic value
+
+Seed a unique fake marker into an authorized Android test flow. Collect the relevant Logcat output and selected test-build files, then scan them locally.
+
+```sh
+python3 skills/mobile-security-review/scripts/check_canary.py \
+  --canary-file canary.txt \
+  --logcat captured-logcat.txt \
+  --storage captured-preferences.xml
+```
+
+The JSON report lists matches by file and byte offset with no raw capture excerpts. Exit 1 signals a match, and exit 2 signals incomplete coverage or invalid input. See the [canary workflow](skills/mobile-security-review/references/runtime-canary.md) for marker generation, collection, and result interpretation.
+
 ## What the skill adds
 
 The [review guidance](skills/mobile-security-review/references/android-review.md) covers sensitive logging, storage/backup, IPC, links, authentication, WebView, TLS, cryptography, dependencies, and UI privacy. These are agent-assisted review areas, not features implemented by the XML CLI. Use the [report structure](skills/mobile-security-review/references/report-template.md) to capture performed, incomplete, and unperformed work.
@@ -97,7 +110,6 @@ No runtime dependencies or API keys are required. Fixtures are synthetic and are
 
 ## Roadmap
 
-- Add synthetic-token leak tests for Logcat and accessible test-build storage.
 - Add structured source checks for narrowly defined logging patterns, with safe counterexamples.
 - Add release-to-release configuration differences and SARIF output.
 - Add optional local scanner adapters while preserving tool provenance and coverage.

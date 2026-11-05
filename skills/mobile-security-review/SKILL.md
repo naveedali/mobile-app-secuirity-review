@@ -30,6 +30,8 @@ Omit `--network-config` if the app does not declare one. Choose `source` or `unk
 
 Read [Android review areas](references/android-review.md) for the source and runtime checks relevant to the scope. Search narrowly, trace callers and data handling, and validate context before promoting a pattern match to a finding. Do not print raw secrets or upload application artifacts to external services without authorization. Evidence should use redacted values and minimal excerpts.
 
+For authorized runtime tests with local captures, follow the [synthetic canary workflow](references/runtime-canary.md). Use fresh test markers and record the flow and capture scope. Treat a match as observed marker presence and assess its impact in context.
+
 If existing local scanners are available, they can supplement this workflow. Preserve their versions, inputs, failures, and coverage in the report. No external scanner is required by this skill. Do not silently install tools, contact discovered endpoints, or operate a device beyond the authorized scope.
 
 ## Assess and report
